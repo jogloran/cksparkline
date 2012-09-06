@@ -127,6 +127,8 @@
         CGContextAddLineToPoint(context, point.x, point.y);        
     }
     
+    CGContextSetStrokeColorWithColor(context, [UIColor orangeColor].CGColor);
+    CGContextSetLineWidth(context, 0.5);
     CGContextStrokePath(context);    
     CGContextRestoreGState(context);
 }
@@ -147,7 +149,14 @@
     CGContextAddLineToPoint(context, point.x, CGRectGetMaxY(rect));
     CGContextAddLineToPoint(context, boundary.min.x, CGRectGetMaxY(rect));
     
-    CGContextFillPath(context);
+    CGPathRef pathRef = CGContextCopyPath(context);
+    UIBezierPath* path = [UIBezierPath bezierPathWithCGPath: pathRef];
+    UIColor* p = [UIColor colorWithPatternImage: [UIImage imageNamed: @"check_orange.png"]];
+    [p setFill];
+    [path fill];
+    CGPathRelease(pathRef);
+    
+//    CGContextFillPath(context);
     CGContextRestoreGState(context);
 }
 
